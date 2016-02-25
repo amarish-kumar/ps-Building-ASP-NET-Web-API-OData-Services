@@ -23,5 +23,29 @@ namespace APM.WebAPI
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
         }
+
+        protected void Application_BeginRequest()
+        {
+            //if (Request.Headers.AllKeys.Contains("Origin") && Request.HttpMethod == "OPTIONS")
+            //{
+            //    Response.Flush();
+            //}
+
+            /*
+            string[] allowedOrigin = new string[] { "http://localhost:60343" };
+
+            var origin = HttpContext.Current.Request.Headers["Origin"];
+
+            if (origin != null && allowedOrigin.Contains(origin))
+            {
+                HttpContext.Current.Response.AddHeader("Access-Control-Allow-Origin", origin);
+                HttpContext.Current.Response.AddHeader("Access-Control-Allow-Methods", "GET,POST");
+            }
+            */
+
+            HttpContext.Current.Response.AddHeader("Access-Control-Allow-Origin", "*");
+
+            HttpContext.Current.Response.AddHeader("Access-Control-Allow-Methods", "GET,POST");
+        }
     }
 }
