@@ -6,13 +6,17 @@ using System.Net.Http;
 using System.Web.Http;
 
 using APM.WebAPI.Models;
+using System.Web.Http.OData;
+using System.Web.Http.OData.Query;
+using System.Web.Http.OData.Routing;
 
 namespace APM.WebAPI.Controllers
 {
+    [ODataRouting]
     public class ProductsController : ApiController
     {
         // GET api/products
-        //[EnableQueryAttribute]
+        [Queryable]
         public IQueryable<Product> Get()
         {
             var productRepository = new ProductRepository();
