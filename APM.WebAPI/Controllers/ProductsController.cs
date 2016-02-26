@@ -12,11 +12,12 @@ namespace APM.WebAPI.Controllers
     public class ProductsController : ApiController
     {
         // GET api/products
-        public IEnumerable<Product> Get()
+        //[EnableQueryAttribute]
+        public IQueryable<Product> Get()
         {
             var productRepository = new ProductRepository();
 
-            return productRepository.Retrieve();
+            return productRepository.Retrieve().AsQueryable();
         }
 
         public IEnumerable<Product> Get(string search)
