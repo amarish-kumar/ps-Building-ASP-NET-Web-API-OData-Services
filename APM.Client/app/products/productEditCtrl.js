@@ -15,7 +15,11 @@
             function (data) {
                 vm.product = data;
                 vm.originalProduct = angular.copy(data);
-            });
+            },
+            function (response) {
+                vm.message = response.statusText + "\r\n";
+            }
+            );
 
         if (vm.product && vm.product.productId) {
             vm.title = "Edit: " + vm.product.productName;
@@ -30,6 +34,9 @@
                 vm.product.$update({ id: vm.product.productId },
                 function (data) {
                     vm.message = "... Save Complete";
+                },
+                function (response) {
+                    vm.message = response.statusText + "\r\n";
                 }
                 );
             }
