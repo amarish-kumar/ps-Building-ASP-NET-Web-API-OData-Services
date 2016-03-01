@@ -17,26 +17,19 @@ namespace APM.WebAPI.Controllers
     {
         // GET api/products
         [Queryable]
-        public IQueryable<Product> Get()
+        //public IHttpActionResult Get()
+        //public IQueryable<Product> Get()
+        public HttpResponseMessage Get()
         {
             var productRepository = new ProductRepository();
 
-            return productRepository.Retrieve().AsQueryable();
+            //return Ok(productRepository.Retrieve().AsQueryable());
+            //return productRepository.Retrieve().AsQueryable();
+            return Request.CreateResponse<IQueryable<Product>>(HttpStatusCode.OK, productRepository.Retrieve().AsQueryable());
         }
-
-        /*
-        public IEnumerable<Product> Get(string search)
-        {
-            var productRepository = new ProductRepository();
-
-            var products = productRepository.Retrieve();
-
-            return products.Where(p => p.ProductCode.Contains(search));
-        }
-        */
 
         // GET api/products/5
-        public Product Get(int id)
+        public HttpResponseMessage Get(int id)
         {
             Product product;
             var productRepository = new ProductRepository();
@@ -44,28 +37,60 @@ namespace APM.WebAPI.Controllers
             {
                 var products = productRepository.Retrieve();
                 product = products.FirstOrDefault(p => p.ProductId == id);
+                if (product == null)
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Item not found");
+                }
             }
             else
             {
                 product = productRepository.Create();
             }
 
-            return product;
+            return Request.CreateResponse<Product>(HttpStatusCode.OK, product);
         }
 
         // POST api/products
-        public void Post([FromBody]Product product)
+        public HttpResponseMessage Post([FromBody]Product product)
         {
+            if (product == null)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Product cannot be null");
+            }
+
             var productRepository = new ProductRepository();
             var newProducct = productRepository.Save(product);
+
+            if (newProducct == null)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.Conflict, "Empty shit");
+            }
+
+
+            var msg = Request.CreateResponse(HttpStatusCode.Created);
+            msg.Headers.Location = new Uri(Request.RequestUri + newProducct.ProductId.ToString());
+
+            return msg;
         }
 
         [HttpPut]
         // PUT api/products/5
-        public void Put(int id, [FromBody]Product product)
+        public HttpResponseMessage Put(int id, [FromBody]Product product)
         {
+            if (product == null)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Product cannot be null");
+            }
+
             var productRepository = new ProductRepository();
             var updateProduct = productRepository.Save(id, product);
+
+            if (updateProduct == null)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Product not found");
+            }
+
+            return Request.CreateResponse(HttpStatusCode.OK);
         }
 
         // DELETE api/products/5

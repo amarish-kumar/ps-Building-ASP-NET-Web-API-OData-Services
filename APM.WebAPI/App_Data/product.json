@@ -86,5 +86,13 @@
     "ProductId": 11,
     "ProductName": "iWatch",
     "ReleaseDate": "2015-03-10T16:55:08.535279-07:00"
+  },
+  {
+    "Description": "producto chingon werwer",
+    "Price": 8.99,
+    "ProductCode": "ABC-0001",
+    "ProductId": 12,
+    "ProductName": "time 2234123",
+    "ReleaseDate": "2013-05-21T00:00:00-07:00"
   }
 ]
