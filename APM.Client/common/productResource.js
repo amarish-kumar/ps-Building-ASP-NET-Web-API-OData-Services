@@ -2,10 +2,13 @@
     "use strict";
     angular
         .module("common.services")
-        .factory("productResource", ["$resource", "appSettings", productResource]);// factory service
+        .factory("productResource", ["$resource", "appSettings", productResource]); // factory service
 
 
     function productResource($resource, appSettings) {
-        return $resource(appSettings.serverPath + "/api/products/:id");
+        return $resource(appSettings.serverPath + "/api/products/:id", null, 
+        {
+            'update': {method:'PUT'}
+        }); // second param is default value
     };
 } ());

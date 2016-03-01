@@ -43,7 +43,7 @@ namespace APM.WebAPI.Controllers
             if (id > 0)
             {
                 var products = productRepository.Retrieve();
-                product = products.FirstOrDefault(p => p.ProductId == 1);
+                product = products.FirstOrDefault(p => p.ProductId == id);
             }
             else
             {
@@ -60,6 +60,7 @@ namespace APM.WebAPI.Controllers
             var newProducct = productRepository.Save(product);
         }
 
+        [HttpPut]
         // PUT api/products/5
         public void Put(int id, [FromBody]Product product)
         {

@@ -26,12 +26,13 @@ namespace APM.WebAPI
 
         protected void Application_BeginRequest()
         {
-            //if (Request.Headers.AllKeys.Contains("Origin") && Request.HttpMethod == "OPTIONS")
-            //{
-            //    Response.Flush();
-            //}
-
             /*
+            if (Request.Headers.AllKeys.Contains("Origin") && Request.HttpMethod == "OPTIONS")
+            {
+                Response.Flush();
+            }
+
+
             string[] allowedOrigin = new string[] { "http://localhost:60343" };
 
             var origin = HttpContext.Current.Request.Headers["Origin"];
@@ -43,9 +44,24 @@ namespace APM.WebAPI
             }
             */
 
+            /*
             HttpContext.Current.Response.AddHeader("Access-Control-Allow-Origin", "*");
 
-            HttpContext.Current.Response.AddHeader("Access-Control-Allow-Methods", "GET,POST");
+            HttpContext.Current.Response.AddHeader("Access-Control-Allow-Methods", "GET,POST,PUT,OPTIONS");
+
+            HttpContext.Current.Response.AddHeader("Access-Control-Allow-Headers", "*");
+            */
+            //HttpContext.Current.Response.AddHeader("Access-Control-Allow-Headers", "Origin,Content-Type,Accept,Authorization,X-Ellucian-Media-Type");
+
+            HttpContext.Current.Response.AddHeader("Access-Control-Allow-Origin", "*");
+            if (Request.Headers.AllKeys.Contains("Origin") && Request.HttpMethod == "OPTIONS")
+            {
+                HttpContext.Current.Response.AddHeader("Cache-Control", "no-cache");
+                HttpContext.Current.Response.AddHeader("Access-Control-Allow-Methods", "GET, POST, PUT");
+                HttpContext.Current.Response.AddHeader("Access-Control-Allow-Headers", "Content-Type, Accept");
+                HttpContext.Current.Response.AddHeader("Access-Control-Max-Age", "1728000");
+                HttpContext.Current.Response.End();
+            }
         }
     }
 }
