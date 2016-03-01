@@ -18,6 +18,8 @@
             },
             function (response) {
                 vm.message = response.statusText + "\r\n";
+                if (response.data.exceptionMessage)
+                    vm.message += response.data.exceptionMessage;
             }
             );
 
@@ -37,6 +39,8 @@
                 },
                 function (response) {
                     vm.message = response.statusText + "\r\n";
+                    if (response.data.exceptionMessage)
+                        vm.message += response.data.exceptionMessage;
                 }
                 );
             }
@@ -44,6 +48,11 @@
                 vm.product.$save(function (data) {
                     vm.originalProduct = angular.copy(data);
                     vm.message = "... Save Complete";
+                },
+                function (response) {
+                    vm.message = response.statusText + "\r\n";
+                    if (response.data.exceptionMessage)
+                        vm.message += response.data.exceptionMessage;
                 });
             }
         };
